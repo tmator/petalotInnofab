@@ -2,7 +2,7 @@
 
 int V;
 
-AccelStepper stepper(AccelStepper::FULL2WIRE,PIN_STEP,PIN_DIR);
+AccelStepper stepper(AccelStepper::FULL4WIRE,PIN_STEP1,PIN_STEP2,PIN_STEP3,PIN_STEP4);
 
 int stepsPerRevolution = 200;  
 
@@ -10,7 +10,7 @@ bool stepperEnable = false;
 
 void initStepper(){
   stepper.setPinsInverted(true,false,true); //set enable pin inverted
-  stepper.setEnablePin(PIN_EN);
+  //stepper.setEnablePin(PIN_EN);
   stepper.disableOutputs();
   stepper.setMaxSpeed(40*stepsPerRevolution+1);
 }
