@@ -6,6 +6,8 @@
 #include "server.hpp"
 #include "ota.hpp"
 
+//SSD1306Wire display(0x3c, D6, D7); 
+
 void setup() {
   Serial.begin(115200);
   delay(1000);
@@ -15,6 +17,7 @@ void setup() {
   initHotend();
   initStepper();
   InitServer();
+  //InitDisplay();
 }
 
 void loop() {
@@ -24,4 +27,5 @@ void loop() {
   stepperRunTask();
   ArduinoOTA.handle();
   readConfigurationSerial();
+  //DisplayInfo();
 }

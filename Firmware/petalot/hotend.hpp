@@ -16,17 +16,24 @@ double tempLastFilament;
 double tempLastNoFilament;
 double tempLastStart;
 
+const float R_FIXED = 100000.0;     // Résistance fixe de 100kΩ
+const float BETA = 3950.0;          // Coefficient Beta de la thermistance (à ajuster selon le modèle)
+const float T0 = 298.15;            // 25°C en Kelvin
+const float R0 = 100000.0;          // 100kΩ à 25°C
+
 //thermistor
 float logR2, R2;
 //steinhart-hart coeficients for thermistor
 float c1 = 0.8438162826e-03, c2 = 2.059601750e-04, c3 = 0.8615484887e-07;
 
 double Thermistor(float Volts) {
-  R2 = R1 * (1023.0 / (float)Volts - 1.0); //calculate resistance on thermistor
+   // Lecture brute (0–1023)
+  double voltage = (Volts / 1023.0) * 3.3; // Conversion en tension
+  double R_therm = R_FIXED * (3.3 / voltage - 1.0); // Calcul résistance thermistance
 
-  logR2 = log(R2);
-  T = (1.0 / (c1 + c2 * logR2 + c3 * logR2 * logR2 * logR2)); // temperature in Kelvin
-  T = T - 273.15; //convert Kelvin to Celcius
+  // Formule Beta : 1/T = 1/T0 + (1/BETA)*ln(R/R0)
+  double tempK = 1.0 / ( (1.0 / T0) + (1.0 / BETA) * log(R_therm / R0) );
+  T = tempK - 273.15; // Conversion Kelvin -> Celsius
   return T;
 }
 
